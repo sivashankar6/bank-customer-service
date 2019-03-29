@@ -1,0 +1,44 @@
+---
+  - name: Provision an EC2 Instance with autoscaling groups
+    hosts: localhost
+    connection: local
+    gather_facts: False
+    vars:
+      keypair: mykeypair1
+      instance_type: t2.micro
+      image: ami-0ad42f4f66f6c1cc9
+      region: ap-south-1
+    tasks:
+    - name: create Launch conf
+      ec2_lc:
+        name: new_lc2
+        key_name: "{{ keypair }}"
+        security_groups: sg-0e2c821800b113b4d
+        instance_type: "{{ instance_type }}"
+        image_id: "{{ image }}"
+        user_data: "{{ lookup('file','user_data.sh')}}"
+        region: "{{ region }}"
+        instance_profile_name: s3-mybucket-role
+        vpc_id: vpc-0b222256c0ab45539
+        assign_public_ip: yes
+        state: present
+      register: ec2
+    - name: create autoscaling groups
+      ec2_asg:
+        name: myasg
+        launch_config_name: new_lc2
+        target_group_arns: arn:aws:elasticloadbalancing:ap-south-1:358537675364:targetgroup/alb-target-group/a738ddc361eca6d5
+        health_check_period: 500
+        health_check_type: EC2
+        wait_for_instances: yes
+        wait_timeout: 300
+        replace_all_instances: yes
+        min_size: 2
+        max_size: 5
+        desired_capacity: 3
+        region: ap-south-1
+        vpc_zone_identifier: [ 'subnet-0a3e650f745f7eb6c', 'subnet-02683ed174022a50d' ]
+        state: present
+        tags:
+          - environment: stable
+            propagate_at_launch: no
