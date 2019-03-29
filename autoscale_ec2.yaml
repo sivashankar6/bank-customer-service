@@ -6,8 +6,8 @@
     vars:
       keypair: mykeypair1
       instance_type: t2.micro
-      image: ami-0ad42f4f66f6c1cc9
-      region: ap-south-1
+      image: ami-061392db613a6357b
+      region: us-west-2
     tasks:
     - name: create Launch conf
       ec2_lc:
@@ -18,8 +18,8 @@
         image_id: "{{ image }}"
         user_data: "{{ lookup('file','user_data.sh')}}"
         region: "{{ region }}"
-        instance_profile_name: s3-mybucket-role
-        vpc_id: vpc-0b222256c0ab45539
+        
+        vpc_id: vpc-0dc06472a8401abf4
         assign_public_ip: yes
         state: present
       register: ec2
@@ -27,7 +27,7 @@
       ec2_asg:
         name: myasg
         launch_config_name: new_lc2
-        target_group_arns: arn:aws:elasticloadbalancing:ap-south-1:358537675364:targetgroup/alb-target-group/a738ddc361eca6d5
+        target_group_arns: arn:aws:elasticloadbalancing:us-west-2:990456062402:targetgroup/alb-target-group/5ca64d596cca188b
         health_check_period: 500
         health_check_type: EC2
         wait_for_instances: yes
@@ -37,7 +37,7 @@
         max_size: 5
         desired_capacity: 3
         region: ap-south-1
-        vpc_zone_identifier: [ 'subnet-0a3e650f745f7eb6c', 'subnet-02683ed174022a50d' ]
+        vpc_zone_identifier: [ 'subnet-06fc91a378346d667', 'subnet-08806a19d4ca2e700' ]
         state: present
         tags:
           - environment: stable
