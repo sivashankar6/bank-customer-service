@@ -36,7 +36,7 @@
         min_size: 2
         max_size: 5
         desired_capacity: 3
-        region: ap-south-1
+        region: us-west-2
         vpc_zone_identifier: [ 'subnet-06fc91a378346d667', 'subnet-08806a19d4ca2e700' ]
         state: present
         tags:
