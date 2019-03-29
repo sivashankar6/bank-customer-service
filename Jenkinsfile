@@ -14,7 +14,7 @@ pipeline {
       steps {
       withSonarQubeEnv('sonarqube') {
     sh 'mvn clean test sonar:sonar package'
-      nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'maven_release', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/lib/jenkins/workspace/bank-customer-service_project/bank-customer-service-dev/target/customer-service-0.0.1-SNAPSHOT.jar']], mavenCoordinate: [artifactId: 'spring-boot-starter-parent', groupId: 'org.springframework.boot', packaging: 'jar', version: '2.1.3']]]
+      nexusPublisher nexusInstanceId: 'nexus', nexusRepositoryId: 'maven_release', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/lib/jenkins/workspace/bank-customer-service_project/bank-customer-service-dev/target/customer-service-0.0.1-SNAPSHOT.jar']], mavenCoordinate: [artifactId: 'spring-boot-starter-parent', groupId: 'org.springframework.boot', packaging: 'jar', version: '0.0.1']]]
 }
       // sh 'mvn -B -DskipTests clean package'
              }
